@@ -1,23 +1,35 @@
-name: Build ProjectAxis EXE
+name: Build Subeesh Voice Bot EXE
+
 on: [push]
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.10'
+
       - name: Install dependencies
         run: |
-          pip install flask requests pillow pyinstaller==6.3.0 customtkinter psutil
+          python -m pip install --upgrade pip
+          # தேவையான அனைத்து லைப்ரரிகளையும் இங்கே சேர்க்கிறோம்
+          pip install flask pyrogram tgcrypto edge-tts pytgcalls==3.0.0.dev24 pyinstaller
+
       - name: Create EXE
         run: |
-          pyinstaller --onefile --windowed --icon="app_icon.ico" --name "ProjectAxis_Admin" app.py
+          # 1. எரர் வராதபடி --hidden-import சேர்க்கப்பட்டுள்ளது
+          # 2. ஐகான் இல்லாததால் தற்காலிகமாக --icon நீக்கப்பட்டுள்ளது
+          # 3. ffmpeg.exe-ஐ உள்ளே சேர்க்க --add-binary பயன்படுத்தப்பட்டுள்ளது
+          pyinstaller --onefile --noconsole --clean --name "Subeesh_Voice_Bot" --add-binary "ffmpeg.exe;." --hidden-import="pyrogram" --hidden-import="pytgcalls" --hidden-import="flask" --hidden-import="edge_tts" app.py
+
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: ProjectAxis_Admin_App
-          path: dist/ProjectAxis_Admin.exe
+          name: Subeesh_Voice_Bot_App
+          path: dist/Subeesh_Voice_Bot.exe
