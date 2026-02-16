@@ -1,0 +1,6 @@
+flask
+requests
+pillow
+customtkinter
+psutil
+pyinstaller==6.3.0
