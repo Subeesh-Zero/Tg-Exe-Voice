@@ -15,7 +15,7 @@ jobs:
           pip install flask requests pillow pyinstaller==6.3.0 customtkinter psutil
       - name: Create EXE
         run: |
-          pyinstaller --onefile --windowed --icon="app_icon.ico" --name "ProjectAxis_Admin" dashboard.py
+          pyinstaller --onefile --windowed --icon="app_icon.ico" --name "ProjectAxis_Admin" app.py
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
