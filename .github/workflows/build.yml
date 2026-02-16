@@ -1,4 +1,4 @@
-name: Build Subeesh Voice Bot EXE
+name: Final Build Subeesh Voice Bot
 
 on: [push]
 
@@ -18,18 +18,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # பாட் வேலை செய்ய தேவையான அனைத்து லைப்ரரிகளையும் இங்கே சேர்க்கிறோம்
+          # இங்குதான் எல்லா பொருட்களையும் இன்ஸ்டால் செய்கிறோம்
           pip install flask pyrogram tgcrypto edge-tts pytgcalls==3.0.0.dev24 pyinstaller
 
       - name: Create EXE
         run: |
-          # 1. எரர் வராதபடி --hidden-import மூலம் லைப்ரரிகள் சேர்க்கப்பட்டுள்ளது
-          # 2. ஐகான் இல்லாததால் கிட்ஹப் எரர் காட்டியது, அதனால் தற்காலிகமாக --icon நீக்கப்பட்டுள்ளது
-          # 3. ffmpeg.exe-ஐ சாப்ட்வேருக்கு உள்ளேயே சேர்க்க --add-binary பயன்படுத்தப்பட்டுள்ளது
-          pyinstaller --onefile --noconsole --clean --name "Subeesh_Voice_Bot" --add-binary "ffmpeg.exe;." --hidden-import="pyrogram" --hidden-import="pytgcalls" --hidden-import="flask" --hidden-import="edge_tts" app.py
+          # --collect-all என்பதுதான் எல்லா லைப்ரரிகளையும் அப்படியே EXE-க்குள் கொண்டு வரும் மேஜிக்
+          pyinstaller --onefile --noconsole --clean --name "Subeesh_Voice_Bot" --add-binary "ffmpeg.exe;." --collect-all "pytgcalls" --collect-all "pyrogram" --collect-all "edge_tts" app.py
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: Subeesh_Voice_Bot_App
+          name: Subeesh_Voice_Bot_Fixed
           path: dist/Subeesh_Voice_Bot.exe
